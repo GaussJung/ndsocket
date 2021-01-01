@@ -183,9 +183,9 @@ const WebSocket = require('ws');
 
 var allmcnt = 0;     // 전체 메시지 수량 
 var conncnt = 0;     // 소켙 접속 횟수 (전체)
-
+var socketPort = 1000; 
 const wss = new WebSocket.Server({
-  port: 88,
+  port: socketPort,
 });
 
 
