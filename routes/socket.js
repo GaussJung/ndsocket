@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
  // 일반접속  :  ws://serverip:88
  // 보안접속  :  wss://serverip:88
 
- /*
+ 
 const WebSocket = require('ws'); 
 
 var allmcnt  = 0;     // 전체 메시지 수량 
@@ -91,7 +91,6 @@ wss.on('connection', (wskt) => {
 
 });
 // EOF F31-a 
-  
- */ 
+ 
 module.exports = router;
 
