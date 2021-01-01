@@ -112,7 +112,7 @@
 			// F9. 정보가져오기 
 			function doGetData() {
  
-				let targetURL 		= "/namelist";   	        // 저장호출 주소 ( 처리 결과 JSON전달 핸들러 ) 
+				let targetURL 		= "member"; 				// OLD namelist";   	    저장호출 주소 ( 처리 결과 JSON전달 핸들러 ) 
                 let err 			= 0;						// 오류발생 여부 Flag
                
                 let messageStr 		= "";						// 메시지 문구 
@@ -215,17 +215,7 @@
 		 
 		};
 		
-		// V20. 이메일체크 
-		function checkEmail(str) {
-			 
-			let filReg =  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-			
-			let chkval =  trim(str);
-			
-			return filReg.test(chkval); 
-
-		};
-		
+ 
 		 
 	</script> 
 

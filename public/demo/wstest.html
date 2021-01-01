@@ -43,7 +43,7 @@
  
  	<div id="mainContainer" > 
  	
-		<h2><span style='color:blue'>WebSocket Connection Test V1.2</span></h2>
+		<h2><span style='color:blue'>WebSocket Connection Test V1.21</span></h2>
 	 
 		<div id='viewDetail' >
 		
@@ -129,11 +129,11 @@
 	    // ====================== START of JQuery ==================== 
 		$(document).ready(function(){
 		   	 
-            console.log("========== webSocket V1.3 using github ============"); 
-            console.log("cmd >> nodemon server80.js "); 
+            console.log("========== webSocket V1.4 using github ============"); 
+            console.log("cmd >> nodemon server.js or node server.js "); 
             console.log("url >> http://localhost/demo/ws1.html  ============"); 
-            console.log("url >> http://13.125.85.64:5000/demo/ws1.html  ============"); 
-            console.log("sck >> ws://13.125.85.64:88/socket  ============"); 
+            console.log("url >> http://13.125.85.64:3000/demo/wstest.html  ============"); 
+            console.log("sck >> ws://13.125.85.64:1000/socket  ============"); 
             
 
             var ws = null;                  // 웹소켙 객체 
@@ -147,8 +147,8 @@
             var disconnectButton;           // 종료버튼 
             var sendButton;                 // 메시지발송버튼 
 
-            const remoteSocket = 'ws://13.125.85.64:1000/socket';             // 원격접속 
-            const localSocket  = 'ws://localhost:1000';                     // 로컬접속  
+            const remoteSocket = 'ws://13.125.85.64:1000/socket';                   // 원격접속 
+            const localSocket  = 'ws://localhost:1000/socket';                     // 로컬접속  
 
             // P05. 환경설정
             function setInitEnv() {

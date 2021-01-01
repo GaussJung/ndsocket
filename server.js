@@ -1,4 +1,4 @@
-﻿'use strict'
+﻿'use strict'; 
 
 const express   = require('express');
  
@@ -6,7 +6,8 @@ const app   = express();
 const PORT = process.env.PORT = 3000;
  
 // 인원목록 출력 
-var  memberRouter = require('./routes/member');
+var  memberRouter = require('./routes/member');    // 회원목록 
+var socketRouter  = require('./routes/socket');    // 소켙통신 
 
 // post 파서 
 var bodyParser = require('body-parser');            // POST 인자 파서 
@@ -19,94 +20,17 @@ app.use('/member', memberRouter);
 // 정적 데이터 디렉토리 설정 
 app.use(express.static('public'));
  
+
+app.use('/socket', socketRouter);                 // 소켙 통신  
+
 // F10 ============================ 앱리스너 ===============================
 app.listen(PORT, () => {
   let msg; 
-  msg = "Node WebServer V1.879 is running at: " + PORT; 
+  msg = "Node SocketServer V1.879 is running at: " + PORT; 
   //console.log('Node WebServer V1.877  is running at:', PORT);
   console.log(msg);   // 콘솔 
  
 }); 
 
 
- 
-// EOF G1    
-
-// F30 ================  웹소켓  ========================= 
- // 호출주소 
- // 일반접속  :  ws://localhost:88
- // 보안접속  :  wss://localhost:88   
-
-const WebSocket = require('ws'); 
-
-var allmcnt = 0;     // 전체 메시지 수량 
-var conncnt = 0;     // 소켙 접속 횟수 (전체)
-var socketPort = 1000; 
-const wss = new WebSocket.Server({
-  port: socketPort,
-});
-
-
-// F30. socket Error  
-const sendError = (wskt, errmessage) => {
-
-  const messageObject = {
-     type: 'ERROR',
-     payload: errmessage,
-  };
-
-  let outMsg = JSON.stringify(messageObject); 
-
-  console.log("SC100 Error outMsg=" + outMsg); 
-
-  // Send Error Msg 
-  wskt.send(JSON.stringify(messageObject));
-};
-// EOF F30. 
-
-// F31-a. socket connection test 
-wss.on('connection', (wskt) => {
-      
-  let pfnow     = 0.0;        // 현재 시간 millisec 
-  let curmcnt   = 0.0;        // 현재메시지 수량 
   
-  conncnt++;  // 현재 접속 수량증대 
-
-  wskt.send(' Connected To Rocket WebSocket V1.2 conncnt=' + conncnt);
-
-  // F33-1. binding message 
-  wskt.on('message', (indata) => {
-
-    let fmessage  = "";
-
-    // 현재시간 ( millisec )
-    pfnow = process.hrtime(); 
-    curmcnt++;  // 현재메시지 수량 
-    allmcnt++;  // 전체 메시지 접속수량 증대 
-   
-    // console.log( "SC90 indata=" + JSON.stringify(indata) ); 
- 
-    // SF05. Parse Message 
-    try {
-      // fmessage = JSON.parse(indata);
-      fmessage = indata; 
-      // console.log( "SC91 success fmessage=" + indata ); 
-    } 
-    catch (err) {
-      sendError(wskt, 'Wrong format Err SE-150 err=' + err);
-      return;
-    }
-    // EOF SF05. 
-    let metaStr = "Time=" + pfnow + " / connAll=" + conncnt + " / msgAll=" + allmcnt + " / msgCur=" + curmcnt;
-    let finalMsg = metaStr + "\n" + fmessage;  // 최종메시지 : 메타정보 + 전달메시지 
-   
-    console.log( "SC92 finalMsg=" + finalMsg ); 
-
-    wskt.send(finalMsg); 
-    
-  });
-  // EOF F33-1. message binding 
-
-
-});
-// EOF F31-a 

@@ -2,7 +2,7 @@
 
 // 위의 use strict 미명기시 오류발생 
 
-var express 	= require('express');
+var express = require('express');
 var router 	= express.Router();
 
 /* GET users listing.  ( ex : 데이터베이스 접속 )
@@ -14,17 +14,18 @@ router.get('/', function(req, res, next) {
  
 // F30 ================  웹소켓  ========================= 
  // 호출주소 
- // 일반접속  :  ws://serverip:88
- // 보안접속  :  wss://serverip:88
+ // 일반접속  :  ws://serverip:1000/socket
+ // 보안접속  :  wss://serverip:1000/socket
 
  
 const WebSocket = require('ws'); 
 
-var allmcnt  = 0;     // 전체 메시지 수량 
-var conncnt = 0;     // 소켙 접속 횟수 (전체)
+var allmcnt   = 0;     // 전체 메시지 수량 
+var conncnt   = 0;     // 소켙 접속 횟수 (전체)
+var socketPort = 1000; 
 
-const wss = new WebSocket.Server({
-  port: 88,
+const webSkt = new WebSocket.Server({
+  port: 1000,
 });
 
 
@@ -46,14 +47,14 @@ const sendError = (wskt, errmessage) => {
 // EOF F30. 
 
 // F31-a. socket connection test 
-wss.on('connection', (wskt) => {
+webSkt.on('connection', (wskt) => {
       
   let pfnow     = 0.0;        // 현재 시간 millisec 
   let curmcnt   = 0.0;        // 현재메시지 수량 
   
   conncnt++;  // 현재 접속 수량증대 
 
-  wskt.send(' Connected To Rocket WebSocket V1.2 conncnt=' + conncnt);
+  wskt.send(' Connected To Rocket WebSocket V1.4 conncnt=' + conncnt);
 
   // F33-1. binding message 
   wskt.on('message', (indata) => {
@@ -78,7 +79,7 @@ wss.on('connection', (wskt) => {
       return;
     }
     // EOF SF05. 
-    let metaStr = "V1.2 Time=" + pfnow + " / connAll=" + conncnt + " / msgAll=" + allmcnt + " / msgCur=" + curmcnt;
+    let metaStr = "V1.4 Time=" + pfnow + " / connAll=" + conncnt + " / msgAll=" + allmcnt + " / msgCur=" + curmcnt;
     let finalMsg = metaStr + "\n" + fmessage;  // 최종메시지 : 메타정보 + 전달메시지 
    
     console.log( "SC92 finalMsg=" + finalMsg ); 
