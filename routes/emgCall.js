@@ -6,6 +6,27 @@ var router = express.Router();
  
 var dbConnector = require('../config/dbConnector');
 
+// 필드값 보기 
+function viewField(fArr) {
+  
+    let fcnt = fArr.length; 
+    let i = 0; 
+    let fobj = {}; 
+
+    if ( fcnt == 0 ) return false;  // 값이 없음. 
+
+    // console.log("DG08 ArrAll=" + JSON.stringify(fArr) ); 
+
+    // console.log("DG09 field cnt=" + fcnt ); 
+  
+    for ( i=0; i < fcnt; i++ ) { 
+        // 필드값 출력 
+        fobj = fArr[i]; 
+        console.log("DG15=" + JSON.stringify(fobj) );  // 직원정보 객체 출력 
+        // console.log("DG15-1 ecd=" + fobj.ecd );   // 직원번호 출력 
+    }; 
+}; 
+
 // 비상정보 내려보내기 
 function EmgrgencyView(request, response, bnum) {
 
@@ -22,24 +43,32 @@ function EmgrgencyView(request, response, bnum) {
     // 시간측정 
     console.time("DBEX02"); 
 
-    console.log("B111 bnum=" + ecdVal); 
-
-    
     dbConnector.getConnection(function(conn) {
         conn.query(sqlBody)
             .then((results) => {
                     
                 // console.log(results); //[ {val: 1}, meta: ... ]
-                
                 //Output
                 let output = {};
                 let temp = [];
                 output.datas = results;
-                
-                // 결과값 
-                console.log("DG11 DB DATAS=" +  JSON.stringify(output.datas) );
+                //console.log("DG11 DB DATAS=" +  JSON.stringify(output.datas) );
 
-                dbConnector.sendJSON(response, 200, output);
+                let fArr = []; 
+                // 결과값 
+                fArr = output.datas;
+                // console.log("DG12 length arr=" +  fArr.length ); 
+                // 컬럼값 보기 ( fArr = results )
+                // viewField(fArr); 
+                viewField(results); 
+
+                // console.log("DG13 DB DATAS.value=" +  JSON.stringify(output.datas[0]) );
+                dbConnector.sendJSON(response, 200, results);
+                
+                // 전달되는 값의 항목이 많음. 
+                // dbConnector.sendJSON(response, 200, output);
+             
+                console.timeEnd("DBEX02"); 
             })
             .then((res) => {
                 // console.log('RE-111 res = ' + res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
@@ -52,7 +81,7 @@ function EmgrgencyView(request, response, bnum) {
             })
     });
 
-    console.timeEnd("DBEX02"); 
+   
 }; 
 
 
@@ -133,9 +162,7 @@ function viewData(res, bnum) {
       // CF1-END 
 }; 
 // EOF viewData 
-   
-
-// 일반접속이 특이하게 풀링보다 빠름. 
+    
 // G1  localhost/namelist  호출시 목록 출력
 // 아래와 같이 호출시에 목록을 get 및 post방식 모두로 호출함.  
 router.get('/', (req, res) => {
@@ -148,7 +175,7 @@ router.get('/', (req, res) => {
    }; 
 
       
-  console.log("VN-A1 Post bval=" + bnum);
+  console.log("\nVN-A1 Post bval=" + bnum);
 
   EmgrgencyView(req, res, bnum); 
 });
@@ -163,7 +190,7 @@ router.post('/', (req, res) => {
         bnum = 0; 
       }; 
  
-    console.log("VN-A2 Post bval=" + bnum);
+    console.log("\nVN-A2 Post bval=" + bnum);
     EmgrgencyView(req, res, bnum); 
 });
  

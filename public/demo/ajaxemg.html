@@ -98,9 +98,13 @@
             // F1. 최종정보 채우기 
             function fillUserData(outJson) {
                 let outString = JSON.stringify(outJson); 
-				console.log("T200-outString=" + outString); 
-				
-                $("#outResult").val(outString); 
+
+                console.log("T200-outString=" + outString); 
+                // 5자 이상만 기록 
+                if ( outString.length > 5 ) {
+                    $("#outResult").val(outString); 
+                };
+               
             }; 
 
 
@@ -112,7 +116,7 @@
 			// F9. 정보가져오기 
 			function doGetData() {
  
-				let targetURL 		= "/emergency"; 				// OLD namelist";   	    저장호출 주소 ( 처리 결과 JSON전달 핸들러 ) 
+				let targetURL 		= "/emergency"; 			// OLD namelist";   	    저장호출 주소 ( 처리 결과 JSON전달 핸들러 ) 
                 let err 			= 0;						// 오류발생 여부 Flag
                
                 let messageStr 		= "";						// 메시지 문구 
@@ -153,7 +157,6 @@
                     let bval = $("#bnum").val(); 
                     let outVal = "";  // 출력저장값 
 					
-		
                     console.log("T100-in bval=" + bval); 
 
                     // 호출 시작주소 
@@ -161,14 +164,21 @@
                     $.ajax({
                          url: targetURL,
                          type:'post',
+                         timeout:3000,
                          dataType: 'json',
                          data: {chcode:'getUserList', bnum:bval},
                          cache: false,
                          async: true,
                          success: function(fdata) {
+
+                            console.log("FD=" + fdata);
+
                              // 정상적인 값이 호출이 되었을 경우 사용자 정보를 채움 
-                            if ( fdata != undefined && fdata !== null) {
+                            if ( fdata != undefined && fdata !== null ) {
                                 fillUserData(fdata); 
+                            }
+                            else {
+                               $("#outResult").val("No Data"); 
                             }; 
                               
                          },
