@@ -89,7 +89,7 @@ function setDeviceStatusList(statusCdVal) {
  // 기기상태 점검 타이머
 var deviceStatusChecker;            
 var deviceCheckCnt      = 0;    // 체크 횟수 
-var deviceCheckTime     = 3000; // 0.5초 간격으로 타임체크 
+var deviceCheckTime     = 100; // 0.1초 간격으로 타임체크 
 
 // F015. 타이머 기동 
 function startDeviceChecker(statusCdVal) {
