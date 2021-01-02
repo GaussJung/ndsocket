@@ -124,6 +124,8 @@ function stopDeviceChecker() {
 
 }; 
 
+
+
 // 기동과 동시에 A상태의 기기목록 호출 
 startDeviceChecker("A"); 
  
