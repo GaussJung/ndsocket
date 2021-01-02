@@ -2,9 +2,9 @@
 // DB접속자 (경로에 유의할것!!)
 var dbConnector = require('../config/miDBConnector');
 
-var resultSetArr            = [];       // 결과값 배열 
+var resultSetArr     = [];       // 결과값 배열 
 
-var resultSetStr            = "";       // 결과값 문자열 
+var resultSetStr      = "";       // 결과값 문자열 
 
 // 필드값 보기 
 function viewField(fArr) {
@@ -38,9 +38,9 @@ function getDeviceFlagSet(statusCdVal) {
 
     resultSetStr        = "";  // 결과값 문자열 초기화 
  
-    // 상태코드 정보에 따른 데이터 호출 
+    // 상태코드 정보에 따른 데이터 호출 (최대5개 - TEST)
     // sqlBody = "SELECT deviceid, devicenm, opentm, closetm FROM biz_device_info WHERE statuscd = ? Limit 0,2 "; 
-    sqlBody = "SELECT deviceid, opentm, closetm FROM biz_device_info WHERE statuscd = ? Limit 0,2 "; 
+    sqlBody = "SELECT deviceid, opentm, closetm FROM biz_device_info WHERE statuscd = ? Limit 0, 5"; 
  
     // 시간측정 
     console.time("DBK-EX03"); 
