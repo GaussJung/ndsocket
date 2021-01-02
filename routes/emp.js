@@ -37,7 +37,7 @@ function sendEmpDataToWeb(res, eflag) {
        
       console.log("EMP-V2 Arr Length gEmpCnt=" + gEmpCnt) ;
 
-      if ( gEmpCnt.length > 0 ) {
+      if ( gEmpCnt > 0 ) {
         // 한개라도 자료가 있을 경우 내려보냄 
         res.send(gEmpOutStr);
       }; 
