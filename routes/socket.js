@@ -47,47 +47,52 @@ const sendError = (wskt, errmessage) => {
 // EOF F30. 
 
 // F31-a. socket connection test 
-webSkt.on('connection', (wskt) => {
+webSkt.on('connection', (wskt, request) => {
       
-  let pfnow     = 0.0;        // 현재 시간 millisec 
-  let curmcnt   = 0.0;        // 현재메시지 수량 
+    // console.log(`C09. Conn Url ${request.url}`);
+    let conuri =  request.url; 
+
+    console.log( "SC10 conuri=" + conuri  ); 
+
+    let pfnow     = 0.0;        // 현재 시간 millisec 
+    let curmcnt   = 0.0;        // 현재메시지 수량 
   
-  conncnt++;  // 현재 접속 수량증대 
+    conncnt++;  // 현재 접속 수량증대 
 
-  wskt.send(' Connected To Rocket WebSocket V1.4 conncnt=' + conncnt);
+    wskt.send('C10 Connected To Rocket WebSocket V1.4 conncnt=' + conncnt);
 
-  // F33-1. binding message 
-  wskt.on('message', (indata) => {
+    // F33-1. binding message 
+    wskt.on('message', (indata) => {
 
-    let fmessage  = "";
+      let fmessage  = "";
 
-    // 현재시간 ( millisec )
-    pfnow = process.hrtime(); 
-    curmcnt++;  // 현재메시지 수량 
-    allmcnt++;  // 전체 메시지 접속수량 증대 
-   
-    // console.log( "SC90 indata=" + JSON.stringify(indata) ); 
- 
-    // SF05. Parse Message 
-    try {
-      // fmessage = JSON.parse(indata);
-      fmessage = indata; 
-      // console.log( "SC91 success fmessage=" + indata ); 
-    } 
-    catch (err) {
-      sendError(wskt, 'Wrong format Err SE-150 err=' + err);
-      return;
-    }
-    // EOF SF05. 
-    let metaStr = "V1.4 Time=" + pfnow + " / connAll=" + conncnt + " / msgAll=" + allmcnt + " / msgCur=" + curmcnt;
-    let finalMsg = metaStr + "\n" + fmessage;  // 최종메시지 : 메타정보 + 전달메시지 
-   
-    console.log( "SC92 finalMsg=" + finalMsg ); 
-
-    wskt.send(finalMsg); 
+      // 현재시간 ( millisec )
+      pfnow = process.hrtime(); 
+      curmcnt++;  // 현재메시지 수량 
+      allmcnt++;  // 전체 메시지 접속수량 증대 
     
-  });
-  // EOF F33-1. message binding 
+      // console.log( "SC90 indata=" + JSON.stringify(indata) ); 
+  
+      // SF05. Parse Message 
+      try {
+        // fmessage = JSON.parse(indata);
+        fmessage = indata; 
+        // console.log( "SC91 success fmessage=" + indata ); 
+      } 
+      catch (err) {
+        sendError(wskt, 'Wrong format Err SE-150 err=' + err);
+        return;
+      }
+      // EOF SF05. 
+      let metaStr = "V1.4 Time=" + pfnow + " / connAll=" + conncnt + " / msgAll=" + allmcnt + " / msgCur=" + curmcnt;
+      let finalMsg = metaStr + "\n" + fmessage;  // 최종메시지 : 메타정보 + 전달메시지 
+    
+      console.log( "SC92 finalMsg=" + finalMsg ); 
+
+      wskt.send(finalMsg); 
+      
+    });
+    // EOF F33-1. message binding 
 
 
 });
