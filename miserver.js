@@ -69,7 +69,7 @@ function setDeviceStatusList(statusCdVal) {
             // console.log("DVC-V3 dcnt=" + gDeviceCnt + " / result=" + gDeviceOutStr);
         }; 
    
-    }, 1000);
+    }, 100);
    
 }; 
 // EOF F10. 
@@ -115,7 +115,6 @@ function stopDeviceChecker() {
     };
 
 }; 
-
  
 // F17. 소켙상태확인 
 function checkSocketOpen(paramDeviceId) {
@@ -132,10 +131,7 @@ function checkSocketOpen(paramDeviceId) {
     }; 
    
 }; 
-
-
-
-
+ 
 // F31. 기기 오픈 전달  
 function checkOpenMsg(deviceArr) {
     
@@ -162,12 +158,11 @@ function checkOpenMsg(deviceArr) {
     
 }; 
 
-
-
+ 
 // 기동과 동시에 A상태의 기기목록 호출 
 startDeviceChecker("A"); 
  
-// F20 ============================ 앱리스너 ===============================
+// F20 ============================ 앱리스너 : 소켙만 열경우 필요없음 ===============================
  
 app.listen(PORT, () => {
   let msg; 

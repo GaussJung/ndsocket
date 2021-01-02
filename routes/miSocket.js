@@ -18,16 +18,13 @@ var conncnt   = 0;                  // 소켙 접속 횟수 (전체)
 var socketPort = 1001; 
 var wshashtable = new Hashtable();  // 웹소켙 객체추가 
 
+// 메인에서 해시테이블 상태확인 
 global.wshashtable = wshashtable;
 
 const webSkt = new WebSocket.Server({
   port: socketPort,
 });
  
-
-
-
-
 
 // F17. 소켙상태확인 
 function checkSocketArr() {
@@ -125,7 +122,7 @@ function checkOpenMsg(deviceArr) {
     // ex) 디바이스 오브젝트 dObj = {"deviceid":"111111","opentm":"08:30:00","closetm":"03:00:00"} 
     for( i = 0; i < acnt ; i++ ) {
 
-         dvObj =  deviceArr[i] ; 
+        dvObj =  deviceArr[i] ; 
 
         console.log("DV11 dobj=" + JSON.stringify(dvObj) ); 
     
@@ -162,11 +159,9 @@ webSkt.on('connection', (wskt, request) => {
 
     wskt.send(' DEVICE STATUS SET=' +  deviceStatusSet.getResulSetStr() );
    
-
     let deviceSetArr = deviceStatusSet.getResulSetArr();  // 목록 배열 호출 
     let deviceSetCnt = deviceSetArr.length;  
     console.log( "DV98 Arr size=" + deviceSetArr.length); 
-
 
     // 열림 대상 확인 
     if ( deviceSetCnt > 0 ) {
