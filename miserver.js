@@ -1,5 +1,6 @@
 ﻿'use strict'; 
 
+// VER 1.0 for ncsocket 
 const express   = require('express');
  
 const app   = express();
