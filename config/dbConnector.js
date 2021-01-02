@@ -9,12 +9,13 @@ const pool = mariadb.createPool({
     user: dbconfig.user,
     password: dbconfig.password,
     database: dbconfig.database,
-    connectionLimit: 7 
+    connectionLimit: 3 
 });
 
 
 // DB접속자 
 function dbConnector() {
+
     // 접속정보 가져오기 
     this.getConnection = function(callback) {
         pool.getConnection()
@@ -31,7 +32,8 @@ function dbConnector() {
             let conn = await pool.getConnection();
             // console.log("conn = " + conn); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
             return conn;
-        } catch (err) {
+        } 
+        catch (err) {
             throw err;
         }
         return null;

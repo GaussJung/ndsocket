@@ -37,14 +37,14 @@ function EmgrgencyView(request, response, bnum) {
         sqlBody = "SELECT ecd, empname, eflag FROM ex_emp WHERE ecd = '" + ecdVal + "'"; 
     }
     else {
-        sqlBody = "SELECT ecd, empname, eflag FROM ex_emp WHERE eflag = 100 "; 
+        sqlBody = "SELECT ecd, empname, eflag FROM ex_emp WHERE eflag = 100  "; 
     }; 
 
     // 시간측정 
     console.time("DBEX02"); 
 
     dbConnector.getConnection(function(conn) {
-        conn.query(sqlBody)
+        conn.query(sqlBody, [100])
             .then((results) => {
                     
                 // console.log(results); //[ {val: 1}, meta: ... ]
@@ -190,8 +190,9 @@ router.post('/', (req, res) => {
         bnum = 0; 
       }; 
  
-    console.log("\nVN-A2 Post bval=" + bnum);
+    console.log("\nVN-A2  before Post bval=" + bnum);
     EmgrgencyView(req, res, bnum); 
+    console.log("\nVN-A3 after Post bval=" + bnum);
 });
  
 module.exports = router;

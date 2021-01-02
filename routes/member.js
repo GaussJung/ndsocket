@@ -4,6 +4,9 @@ var express = require('express');
 
 var router = express.Router();
 
+var rcnt = 0; // 레코드 수량 
+var outStr = ""; 
+
 // F20 ============================ DB호출 ===============================
 
 // 일반호출 :   http://localhost/first.html
@@ -21,7 +24,7 @@ function viewData(res, bnum) {
    // DB접속 
    
    //  F5 
-  
+
    // CF1-START
    connection.query(sqlBody, function (err, rows, fields) {
      
@@ -60,14 +63,23 @@ function viewData(res, bnum) {
         }; 
         // EOF For-D1  
 
+  
         // rows 는 아래의 outAll 과 동일, 즉 레코드셑은 JSON 배열로 반환 
-        console.log( 'VN-400 ==========  outAll = ' +  JSON.stringify(outAll) ); 
+        // console.log( 'VN-400 ==========  outAll = ' +  JSON.stringify(outAll) ); 
        
         // console.log( 'VN-500 ============ ENDING Conn V1.817 =============== '); 
-        res.send(outAll);
+        // res.send(outAll);  : callBack함수에서 실행 
+
+
         // res.send(outData);
         console.timeEnd("DBEX01"); 
-        
+
+        console.log("VN-IN-A11 TimeEnd after DBEX01"); 
+ 
+        // 결과 문자열 
+        outStr = JSON.stringify(outAll);  
+
+
       });
       // CF1-END 
 }; 
@@ -103,8 +115,20 @@ router.get('/', (req, res) => {
 // POST 
 router.post('/', (req, res) => {
   let bnum = req.body.bnum;   // similar to 포스트 bnum 
-  console.log("VN-A2 Post bval=" + bnum);
+  console.log("VN-A2  before Post bval=" + bnum);
   viewNameList(req, res, bnum); 
+
+  
+  setTimeout( function(){   
+    // callBack 호출받은뒤에 실행 
+    // 이와 같이 호출시에 결과값을 리턴받을 수 있음. (비동기값을 회피 )                	
+    console.log("VN-A3-V1.91 after  Post bval=" + bnum + " / rcnt=" + rcnt + "  /  outStr=" + outStr) ;
+    res.send(outStr);
+ 
+  }, 100);
+
+
+ 
 });
  
 module.exports = router;
