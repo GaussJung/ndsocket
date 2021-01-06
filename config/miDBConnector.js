@@ -25,7 +25,38 @@ function miDBConnector() {
             //not connected
         });
     };
+
+    
+    // 비동기 접속 
+    this.getConnectionAsync = async function() {
+        try {
+            let conn = await pool.getConnection();
+            // console.log("conn = " + conn); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+            return conn;
+        } 
+        catch (err) {
+            throw err;
+        }
+        return null;
+    };
  
+
+    
+    // 동기 접속 
+    this.getConnectionAwait = async function() {
+        try {
+            let conn = await pool.getConnection();
+            // console.log("conn = " + conn); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+            return conn;
+        } 
+        catch (err) {
+            throw err;
+        }
+        return null;
+    };
+ 
+
+
     // JSON 데이터 전달 (통신전달가능)
     this.sendJSON = function(response, httpCode, body) {
          let result = JSON.stringify(body);

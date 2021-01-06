@@ -37,49 +37,36 @@ app.use('/misocket', socketRouter);
 
 
 // 상태목록 호출 라이브러리  (경로명에 유의)
-var deviceStatusSet = require('./dataset/dataDeviceSet');   
+var deviceStatusSet = require('./dataset/dataDeviceSetPool');   
 
 var deviceArr     = [];       // 설정상태 기기목록 콜렉션
 var deviceCnt     = 0;        // 설정상태 기기수량 
-var deviceOutStr  = "";       // 설정상태 기기목록 문자열 
-
+ 
  // 글로벌 변수선언 
  global.deviceStatusSet = deviceStatusSet; 
  
-// F10. 비상호출 대기 직원 정보전달 
+// F10. 기기세트 정보전달 Good 
 function setDeviceStatusList(statusCdVal) {
-
-    // deviceArr     = [];       // 설정상태 기기목록 콜렉션 초기화 
-    // deviceCnt     = 0;        // 설정상태 수량 초기화 
-    // deviceOutStr  = "";       // 설정상태 기기목록 문자열 초기화  
-
-    deviceStatusSet.getDeviceFlagSet(statusCdVal);  // 상태코드값에 해당하는 콜렉션 설정 
-
-    setTimeout( function(){   
-        // callBack 호출받은뒤에 실행 
-        // 이와 같이 호출시에 결과값을 리턴받을 수 있음. (비동기값을 회피 )   
-        deviceArr      = deviceStatusSet.getResulSetArr(); 
-        deviceCnt      = deviceArr.length;
-        deviceOutStr   = deviceStatusSet.getResulSetStr(); 
-
-      
-        console.log("DVC-V3 dcnt=" + deviceCnt );
-
-        if ( deviceCnt > 0 ) {
-            // 한개라도 자료가 있을 경우 내려보냄 
-             console.log("DVC-V4 result=" + deviceOutStr);
-        }; 
-   
-    }, 100);
-   
+    // 모듈에서 데이터셑 호출 
+    deviceStatusSet.getDeviceFlagSet(statusCdVal)
+    .then( function(results){ 
+        // 공용 결과셑에 설정 
+        deviceArr = results; 
+        // 결과셑 수량 확인 
+        deviceCnt = deviceArr.length; 
+    })
+    .catch(function(err){
+        console.log("P10 Promise rejection error: " + err);
+    });
+ 
 }; 
-// EOF F10. 
+// EOF F10
  
 
  // 기기상태 점검 타이머
 var deviceStatusChecker;            
 var deviceCheckCnt      = 0;    // 체크 횟수 
-var deviceCheckTime     = 2000; // 0.1초 간격으로 타임체크 
+var deviceCheckTime     = 500; // 0.1초 (100) ~ 5초 (5000) 간격으로 타임체크 
 
 // F015. 타이머 기동 
 function startDeviceChecker(statusCdVal) {
@@ -92,6 +79,8 @@ function startDeviceChecker(statusCdVal) {
     // 특정 시간 간격으로 체크진행 
     deviceStatusChecker = setInterval(function () {  					 		 
          
+        // deviceArr     = [];  // 기기배열 
+        // deviceCnt     = 0;   // 기기목록 수량 
         // 상태목록 데이터 저장      
         setDeviceStatusList(statusCdVal); 
  
@@ -140,7 +129,12 @@ function checkOpenMsg(deviceArr) {
     let currDeviceid; 
     let dvObj = {};  // 디바이스 객체  
     let i = 0;
-    let acnt = deviceArr.length; 
+    let acnt = 0; 
+    
+    
+    if ( deviceArr != null && deviceArr != undefined ) {
+        acnt = deviceArr.length; 
+    }; 
 
     // ex) 디바이스 오브젝트 dObj = {"deviceid":"111111","opentm":"08:30:00","closetm":"03:00:00"} 
     for( i = 0; i < acnt ; i++ ) {
