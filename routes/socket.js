@@ -14,18 +14,18 @@ router.get('/', function(req, res, next) {
  
 // F30 ================  웹소켓  ========================= 
  // 호출주소 
- // 일반접속  :  ws://serverip:1000/socket
- // 보안접속  :  wss://serverip:1000/socket
+ // 일반접속  :  ws://serverip:1001/socket
+ // 보안접속  :  wss://serverip:443/socket
 
  
 const WebSocket = require('ws'); 
 
 var allmcnt   = 0;     // 전체 메시지 수량 
 var conncnt   = 0;     // 소켙 접속 횟수 (전체)
-var socketPort = 1000; 
+var socketPort = 1001; 
 
 const webSkt = new WebSocket.Server({
-  port: 1000,
+  port: socketPort
 });
 
 

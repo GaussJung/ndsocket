@@ -55,7 +55,7 @@
 						 <span class='titleClass' >접속주소 </span> 
                          <p> 
                          <span> 
-                            <input style='width:95%;' type=text name=wsSvrUrl id=wsSvrUrl  value="ws://localhost:88" >
+                            <input style='width:95%;' type=text name=wsSvrUrl id=wsSvrUrl  value="" >
                         </span>    
 					</li>
   
@@ -130,12 +130,7 @@
 		$(document).ready(function(){
 		   	 
             console.log("========== webSocket V1.4 using github ============"); 
-            console.log("cmd >> nodemon server.js or node server.js "); 
-            console.log("url >> http://localhost/demo/ws1.html  ============"); 
-            console.log("url >> http://13.125.85.64:3000/demo/wstest.html  ============"); 
-            console.log("sck >> ws://13.125.85.64:1000/socket  ============"); 
-            
-
+ 
             var ws = null;                  // 웹소켙 객체 
             var connected = false;          // 접속여부 
  
@@ -147,9 +142,14 @@
             var disconnectButton;           // 종료버튼 
             var sendButton;                 // 메시지발송버튼 
 
-            const remoteSocket = 'ws://13.125.32.176:1000/socket';                   // 원격접속 
-            const localSocket  = 'ws://localhost:1000/socket';                      // 로컬접속  
+        
+            var baseURL      = location.hostname;  
+            var remoteSocket = '';                   // 원격접속 
+            var localSocket  = '';                   // 로컬접속  
 
+            var securePort   = 443;                  // 안전포트 
+            var normalPort   = 1001;                 // 일반포트      
+ 
             // P05. 환경설정
             function setInitEnv() {
 
@@ -162,10 +162,21 @@
                 sendButton          = $('#btnSend');            // 메시지 전송버튼 
 
                 if (location.host.indexOf("localhost") > -1 ) {
-                    // 로컬 기본 소켙주소 
+                    // 로컬 기본 소켙주소  ex) ws://localhost:1001/socket
+                    localSocket  = "ws://" + baseURL + ":" + normalPort + "/socket"; 
                     serverUrl.val(localSocket); 
                 }
                 else {
+                    // 일반 혹은 보안 portocal ( http:  or https: ) 
+                    if (  location.protocol == "http:" ) {
+                        // remoteSocket = 'ws://aaa.blabla.com:1001/socket'; 
+                        remoteSocket = "ws://" + baseURL + ":" + normalPort + "/socket"; 
+                    }
+                    else {
+                        // 443생략 : ORG remoteSocket = 'wss://aaa.blabla.com:443/socket'; 
+                        remoteSocket = "wss://" + baseURL + ":" + normalPort + "/socket"; 
+                    }; 
+
                     // 원격 기본 소켙주소 
                     serverUrl.val(remoteSocket); 
                 }; 
@@ -174,6 +185,7 @@
 
             // 환경설정 
             setInitEnv();
+
 
             // P10. 웹소켙 열기 
             var open = function() {
