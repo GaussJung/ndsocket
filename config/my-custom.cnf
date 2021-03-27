@@ -1,0 +1,23 @@
+﻿[mysqld]
+sql_mode='ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER'
+init_connect='SET collation_connection = utf8_unicode_ci'
+init_connect='SET NAMES utf8'
+character-set-server=utf8
+collation-server=utf8_unicode_ci
+
+max_connections = 150
+key_buffer_size = 256M
+
+
+# === InnoDB Settings ===
+
+default_storage_engine          = InnoDB
+innodb_buffer_pool_instances    = 1      # Use 1 instance per 1GB of InnoDB pool size
+innodb_buffer_pool_size         = 256    # Use up to 70-80% of RAM
+innodb_file_per_table           = 1
+innodb_flush_log_at_trx_commit  = 0
+innodb_flush_method             = O_DIRECT
+innodb_log_buffer_size          = 4M
+
+innodb_read_io_threads          = 4
+innodb_write_io_threads         = 4
