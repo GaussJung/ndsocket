@@ -1,8 +1,9 @@
-﻿
+﻿ 
 module.exports = {
-  host: '52.79.66.89',
-  user: 'eqnight',
-  password: 'rkdmfdufma123!',
-  database: 'eqnight',
+  host: 'mydb.nuriblock.com',
+  user: 'devdba',
+  port: 3306,
+  password: 'devdba12!',
+  database: 'covidb',
   connectionLimit: 10
 };
