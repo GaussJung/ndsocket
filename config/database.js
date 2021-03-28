@@ -1,5 +1,5 @@
 ﻿
-// mysql db using port 3306 
+// mysql docker db using port 3306  - dcmysql 5.7 
 module.exports = {
   host: 'mydb.nuriblock.com',
   user: 'devdba',
